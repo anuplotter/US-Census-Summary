@@ -185,19 +185,6 @@ df_race_origin_population = df_census_copy.groupby(['Race_and_Origin']).sum().re
 df_race_origin_population['pop_growth'] = df_race_origin_population['Population_2019']/df_race_origin_population['Population_2010']-1
 
 
-'''
-fig_2010, ax_2010 = plt.subplots(figsize=(4, 4))
-ax_2010.pie(df_race_origin_population['Population_2010'], labels=df_race_origin_population['Race_and_Origin'], autopct='%.1f%%')
-ax_2010.set_title('2010 Population Makeup')
-
-fig_2019, ax_2019 = plt.subplots(figsize=(4, 4))
-ax_2019.pie(df_race_origin_population['Population_2019'], labels=df_race_origin_population['Race_and_Origin'], autopct='%.1f%%')
-ax_2019.set_title('2019 Population Makeup')
-st.pyplot(fig_2010)
-st.pyplot(fig_2019)
-
-'''
-
 base_2010_pop = alt.Chart(df_race_origin_population, title = '2010 Population by Race and Origin').encode(
     theta=alt.Theta("Population_2010:Q", stack=True), color=alt.Color("Race_and_Origin:N")
 )
