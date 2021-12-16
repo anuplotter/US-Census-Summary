@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import altair as alt
 import math as math
-#from numerize import numerize as num
+import matplotlib.pyplot as plt
 #from vega_datasets import data
 
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
@@ -184,22 +184,36 @@ st.markdown(line_break)
 df_race_origin_population = df_census_copy.groupby(['Race_and_Origin']).sum().reset_index()
 df_race_origin_population['pop_growth'] = df_race_origin_population['Population_2019']/df_race_origin_population['Population_2010']-1
 
-base_2010_pop = alt.Chart(df_race_origin_population, title = '2010 Population by Race and Origin').encode(
-    theta=alt.Theta("Population_2010:Q", stack=True), color=alt.Color("Race_and_Origin:N")
-)
-pie_2010_pop = base_2010_pop.mark_arc(outerRadius=120).properties(width=600, height = 400)
-text_2010_pop = base_2010_pop.mark_text(radius=150, size=10).encode(alt.Text("Population_2010", format ='.3s')).properties(width=600, height = 400)
 
-base_2019_pop = alt.Chart(df_race_origin_population, title = '2019 Population by Race and Origin').encode(
-    theta=alt.Theta("Population_2019:Q", stack=True), color=alt.Color("Race_and_Origin:N")
-)
-pie_2019_pop = base_2019_pop.mark_arc(outerRadius=120).properties(width=600, height = 400)
-text_2019_pop = base_2019_pop.mark_text(radius=140, size=10).encode(alt.Text("Population_2019", format ='.3s')).properties(width=600, height = 400)
+fig_2010, ax_2010 = plt.subplots(figsize=(4, 4))
+ax_2010.pie(df_race_origin_population['Population_2010'], labels=df_race_origin_population['Race_and_Origin'], autopct='%.1f%%')
+ax_2010.set_title('2010 Population Makeup')
 
-st.altair_chart(pie_2010_pop + text_2010_pop)
-st.altair_chart(pie_2019_pop + text_2019_pop)
+fig_2019, ax_2019 = plt.subplots(figsize=(4, 4))
+ax_2019.pie(df_race_origin_population['Population_2019'], labels=df_race_origin_population['Race_and_Origin'], autopct='%.1f%%')
+ax_2019.set_title('2019 Population Makeup')
+
+
+#base_2010_pop = alt.Chart(df_race_origin_population, title = '2010 Population by Race and Origin').encode(
+#    theta=alt.Theta("Population_2010:Q", stack=True), color=alt.Color("Race_and_Origin:N")
+#)
+#pie_2010_pop = base_2010_pop.mark_arc(outerRadius=120).properties(width=600, height = 400)
+#text_2010_pop = base_2010_pop.mark_text(radius=150, size=10).encode(alt.Text("Population_2010", format ='.3s')).properties(width=600, height = 400)
+
+
+#base_2019_pop = alt.Chart(df_race_origin_population, title = '2019 Population by Race and Origin').encode(
+#    theta=alt.Theta("Population_2019:Q", stack=True), color=alt.Color("Race_and_Origin:N")
+#)
+#pie_2019_pop = base_2019_pop.mark_arc(outerRadius=120).properties(width=600, height = 400)
+#text_2019_pop = base_2019_pop.mark_text(radius=140, size=10).encode(alt.Text("Population_2019", format ='.3s')).properties(width=600, height = 400)
+
+
+#st.altair_chart(pie_2010_pop + text_2010_pop)
+#st.altair_chart(pie_2019_pop + text_2019_pop)
 #st.altair_chart(pie_2019_pop + text_2019_pop | pie_2010_pop + text_2010_pop)
 
+st.pyplot(fig_2010)
+st.pyplot(fig_2019)
 st.markdown(line_break)
 
 
