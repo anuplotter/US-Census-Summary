@@ -6,12 +6,12 @@ import pandas as pd
 import altair as alt
 import math as math
 #from numerize import numerize as num
-from vega_datasets import data
+#from vega_datasets import data
 
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
 
 #df_census = pd.read_csv("C:/Users/anupm/OneDrive/Desktop/Plot AI/Datasets/Al/Census/Census.csv")
-df_census = pd.read_csv('https://raw.githubusercontent.com/anuplotter/census_test/main/census.csv?token=AWBUJONUJNZMGNXYB7RDJETBXLS4I')
+df_census = pd.read_csv('https://raw.githubusercontent.com/anuplotter/census_test/main/census.csv?token=AWBUJOMBYNTATFKNDK7H52TBXLUCA')
 
 #MULTISLECT
 
@@ -66,8 +66,11 @@ growth = df_census_copy['Population_2019'].sum()/df_census_copy['Population_2010
 percentage_growth = "{:.1%}".format(growth)
 
 st.header('US Census Data Summary')
-st.write('**2010 Population:**', num.numerize(df_census_copy['Population_2010'].sum()*1.00,1))
-st.write('**2019 Population:**', num.numerize(df_census_copy['Population_2019'].sum()*1.00,1), '(growth ', percentage_growth, ')' )
+st.write('**2010 Population:**', df_census_copy['Population_2010'].sum())
+st.write('**2019 Population:**', df_census_copy['Population_2019'].sum(), '(growth ', percentage_growth, ')' )
+
+#st.write('**2010 Population:**', num.numerize(df_census_copy['Population_2010'].sum()*1.00,1))
+#st.write('**2019 Population:**', num.numerize(df_census_copy['Population_2019'].sum()*1.00,1), '(growth ', percentage_growth, ')' )
 st.markdown(line_break)
 
 
