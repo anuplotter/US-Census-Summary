@@ -156,6 +156,28 @@ st.altair_chart(bubble_state_population)
 
 st.markdown(line_break)
 
+# Age Group
+df_age_group_population = df_census_copy.groupby(['Age_Group', 'Race_and_Origin']).sum().reset_index()
+df_age_group_population['pop_growth'] = df_age_group_population['Population_2019']/df_age_group_population['Population_2010']-1
+stacked_bar_age_race_origin = alt.Chart(df_age_group_population, title = '2019 Population by Age Group').mark_bar().encode(
+    x=alt.X('Age_Group', axis = alt.Axis( title= 'Age Group')),
+    y=alt.Y('Population_2019', axis = alt.Axis( title= '2019 Population', format = '~s')),
+    color='Race_and_Origin',
+    tooltip=[alt.Tooltip('Age_Group', title = 'Age Group'), alt.Tooltip('Race_and_Origin', title='Race and Origin'),alt.Tooltip('Population_2019', format ='.3s', title='Pop. 2019') ]
+).properties(width=700)
+
+
+area_age_race_origin = alt.Chart(df_age_group_population, title = '2019 Population by Age Group').mark_area().encode(
+    x=alt.X('Age_Group', axis = alt.Axis( title= 'Age Group')),
+    y=alt.Y('Population_2019', stack="normalize", axis = alt.Axis( title= '2019 Population', format ='%')),
+    color='Race_and_Origin',
+    tooltip=[alt.Tooltip('Age_Group', title = 'Age Group'), alt.Tooltip('Race_and_Origin', title='Race and Origin'),alt.Tooltip('Population_2019', format ='.3s', title='Pop. 2019') ]
+).properties(width=700)
+
+st.altair_chart(stacked_bar_age_race_origin)
+st.altair_chart(area_age_race_origin)
+st.markdown(line_break)
+
 
 
 #Race and Origin
@@ -181,24 +203,3 @@ st.altair_chart(pie_2019_pop + text_2019_pop)
 st.markdown(line_break)
 
 
-# Age Group
-df_age_group_population = df_census_copy.groupby(['Age_Group', 'Race_and_Origin']).sum().reset_index()
-df_age_group_population['pop_growth'] = df_age_group_population['Population_2019']/df_age_group_population['Population_2010']-1
-stacked_bar_age_race_origin = alt.Chart(df_age_group_population, title = '2019 Population by Age Group').mark_bar().encode(
-    x=alt.X('Age_Group', axis = alt.Axis( title= 'Age Group')),
-    y=alt.Y('Population_2019', axis = alt.Axis( title= '2019 Population', format = '~s')),
-    color='Race_and_Origin',
-    tooltip=[alt.Tooltip('Age_Group', title = 'Age Group'), alt.Tooltip('Race_and_Origin', title='Race and Origin'),alt.Tooltip('Population_2019', format ='.3s', title='Pop. 2019') ]
-).properties(width=700)
-
-
-area_age_race_origin = alt.Chart(df_age_group_population, title = '2019 Population by Age Group').mark_area().encode(
-    x=alt.X('Age_Group', axis = alt.Axis( title= 'Age Group')),
-    y=alt.Y('Population_2019', stack="normalize", axis = alt.Axis( title= '2019 Population', format ='%')),
-    color='Race_and_Origin',
-    tooltip=[alt.Tooltip('Age_Group', title = 'Age Group'), alt.Tooltip('Race_and_Origin', title='Race and Origin'),alt.Tooltip('Population_2019', format ='.3s', title='Pop. 2019') ]
-).properties(width=700)
-
-st.altair_chart(stacked_bar_age_race_origin)
-st.altair_chart(area_age_race_origin)
-st.markdown(line_break)
