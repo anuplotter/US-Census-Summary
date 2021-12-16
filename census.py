@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import altair as alt
 import math as math
-from numerize import numerize as num
+#from numerize import numerize as num
 from vega_datasets import data
 
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
