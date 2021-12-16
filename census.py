@@ -68,8 +68,8 @@ growth = df_census_copy['Population_2019'].sum()/df_census_copy['Population_2010
 percentage_growth = "{:.1%}".format(growth)
 
 st.header('US Census Data Summary')
-st.write('**2010 Population:**', df_census_copy['Population_2010'].sum())
-st.write('**2019 Population:**', df_census_copy['Population_2019'].sum(), '(growth ', percentage_growth, ')' )
+st.write('**2010 Population:**', str(int(df_census_copy['Population_2010'].sum()/1e6)),' M')
+st.write('**2019 Population:**', str(int(df_census_copy['Population_2019'].sum()/1e6)),' M', '(growth ', percentage_growth, ')' )
 
 #st.write('**2010 Population:**', num.numerize(df_census_copy['Population_2010'].sum()*1.00,1))
 #st.write('**2019 Population:**', num.numerize(df_census_copy['Population_2019'].sum()*1.00,1), '(growth ', percentage_growth, ')' )
@@ -82,8 +82,6 @@ st.markdown(line_break)
 df_region_population = df_census_copy.groupby(['Region']).sum().reset_index()
 df_region_population['pop_growth'] = df_region_population['Population_2019']/df_region_population['Population_2010']-1
 
-df_region_population_hispanic = df_census_copy[df_census_copy['Race_and_Origin']=='Hispanic'].groupby(['Region']).sum().reset_index()
-df_region_population_hispanic['pop_growth'] = df_region_population_hispanic['Population_2019']/df_region_population_hispanic['Population_2010']-1
 
 bar_region_population = alt.Chart(df_region_population, title = '2019 Population by Region').mark_bar().encode(
     x = alt.X('Region:O', axis=alt.Axis(title='Region'), sort=['South', 'West', 'Midwest', 'North']),
@@ -98,21 +96,23 @@ line_region_population = alt.Chart(df_region_population).mark_line(stroke='#FFA5
 ).properties(width=600)
 
 
+df_region_population_hispanic = df_census_copy.groupby(['Region','Origin']).sum().reset_index()
+df_region_population_hispanic['pop_growth'] = df_region_population_hispanic['Population_2019']/df_region_population_hispanic['Population_2010']-1
 
 bar_region_population_hispanic = alt.Chart(df_region_population_hispanic, title = '2019 Hispanic Population by Region').mark_bar().encode(
     x = alt.X('Region:O', axis=alt.Axis(title='Region'), sort=['South', 'West', 'Midwest', 'North']),
     y = alt.Y('Population_2019', axis = alt.Axis( title= '2019 Population', format ='~s')),
-    tooltip=['Region', alt.Tooltip('Population_2019', format='.3s', title='Pop. 2019') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth')]
-).properties(width=600)
+    tooltip=['Region', 'Origin', alt.Tooltip('Population_2019', format='.3s', title='Pop. 2019') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth')],
+    color ='Origin'
+).properties(width=700)
 
-
-line_region_population_hispanic = alt.Chart(df_region_population_hispanic).mark_line(stroke='#FFA500', interpolate='monotone', point=alt.OverlayMarkDef(color="#FFA500")).encode(
+line_region_population_hispanic = alt.Chart(df_region_population_hispanic).mark_line(stroke='blue', interpolate='monotone', point=alt.OverlayMarkDef(color="blue")).encode(
     alt.X('Region:O', axis=alt.Axis(title='Region'), sort=['South', 'West', 'Midwest', 'North']),
-    alt.Y('pop_growth',axis=alt.Axis(title='Growth', titleColor='#FFA500', format='%')),
-    tooltip=['Region', alt.Tooltip('Population_2019', format='.3s', title='Pop. 2019') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth')]
-).properties(width=600)
-
-st.write('1) South and West regions which account for close to two thirds of the US population also had the highest growth rates.')
+    alt.Y('pop_growth',axis=alt.Axis(title='Growth', titleColor='blue', format='%'),scale=alt.Scale(domain=[-0.1, 0.3]) ),
+    tooltip=['Region', 'Origin', alt.Tooltip('Population_2019', format='.3s', title='Pop. 2019') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth')],
+    color = 'Origin',
+    strokeDash = 'Origin'
+).properties(width=700)
 
 st.altair_chart(alt.layer(bar_region_population, line_region_population).resolve_scale(y = 'independent'))
 st.altair_chart(alt.layer(bar_region_population_hispanic, line_region_population_hispanic).resolve_scale(y = 'independent'))
