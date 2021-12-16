@@ -11,7 +11,9 @@ import math as math
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
 
 #df_census = pd.read_csv("C:/Users/anupm/OneDrive/Desktop/Plot AI/Datasets/Al/Census/Census.csv")
-df_census = pd.read_csv('https://raw.githubusercontent.com/anuplotter/census_test/main/census.csv?token=AWBUJOMBYNTATFKNDK7H52TBXLUCA')
+url='https://drive.google.com/file/d/1GmjBiRnGWcMVlQEt_iRYpzsOnxZweWGJ/view?usp=sharing'
+url2='https://drive.google.com/uc?id=' + url.split('/')[-2]
+df_census = pd.read_csv(url2)
 
 #MULTISLECT
 
