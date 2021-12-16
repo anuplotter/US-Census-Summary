@@ -10,20 +10,20 @@ from vega_datasets import data
 
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
 
-df_census = pd.read_csv("C:/Users/anupm/OneDrive/Desktop/Plot AI/Datasets/Al/Census/Census.csv")
-
+#df_census = pd.read_csv("C:/Users/anupm/OneDrive/Desktop/Plot AI/Datasets/Al/Census/Census.csv")
+df_census = pd.read_csv('https://raw.githubusercontent.com/anuplotter/census_test/main/census.csv?token=AWBUJONUJNZMGNXYB7RDJETBXLS4I')
 
 #MULTISLECT
 
 #Unique option in select widget
+#sel_origin = st.sidebar.multiselect('Origin:', pd.Series(np.append('All', df_census.Origin.unique())), default='All')
+#sel_race = st.sidebar.multiselect('Race:', pd.Series(np.append('All', df_census.Race.unique())), default='All')
+sel_race_origin = st.sidebar.multiselect('Race and Origin:', pd.Series(np.append('All', df_census.Race_and_Origin.unique())), default='All')
+sel_sex = st.sidebar.multiselect('Sex:', pd.Series(np.append('All', df_census.Sex.unique())), default='All')
+sel_age_group = st.sidebar.multiselect('Age Group:', pd.Series(np.append('All', df_census.Age_Group.unique())), default='All')
 sel_region = st.sidebar.multiselect("Region:", pd.Series(np.append('All', df_census.Region.unique())), default='All')
 sel_division = st.sidebar.multiselect("Division:", pd.Series(np.append('All', df_census.Division.unique())), default='All')
 sel_state = st.sidebar.multiselect("State:", pd.Series(np.append('All', df_census.State.unique())), default='All')
-sel_sex = st.sidebar.multiselect('Sex:', pd.Series(np.append('All', df_census.Sex.unique())), default='All')
-sel_origin = st.sidebar.multiselect('Origin:', pd.Series(np.append('All', df_census.Origin.unique())), default='All')
-sel_race = st.sidebar.multiselect('Race:', pd.Series(np.append('All', df_census.Race.unique())), default='All')
-sel_race_origin = st.sidebar.multiselect('Race and Origin:', pd.Series(np.append('All', df_census.Race_and_Origin.unique())), default='All')
-sel_age_group = st.sidebar.multiselect('Age Group:', pd.Series(np.append('All', df_census.Age_Group.unique())), default='All')
 
 
 
@@ -35,10 +35,10 @@ if "All" in sel_state:
     sel_state = df_census.State.unique()
 if "All" in sel_sex:
     sel_sex = df_census.Sex.unique()
-if "All" in sel_origin:
-    sel_origin = df_census.Origin.unique()
-if "All" in sel_race:
-    sel_race = df_census.Race.unique()
+#if "All" in sel_origin:
+#    sel_origin = df_census.Origin.unique()
+#if "All" in sel_race:
+#    sel_race = df_census.Race.unique()
 if "All" in sel_race_origin:
     sel_race_origin = df_census.Race_and_Origin.unique()
 if "All" in sel_age_group:
@@ -54,8 +54,8 @@ df_census_copy = df_census_copy.loc[df_census_copy['Region'].isin(sel_region)]
 df_census_copy = df_census_copy.loc[df_census_copy['Division'].isin(sel_division)]
 df_census_copy = df_census_copy.loc[df_census_copy['State'].isin(sel_state)]
 df_census_copy = df_census_copy.loc[df_census_copy['Sex'].isin(sel_sex)]
-df_census_copy = df_census_copy.loc[df_census_copy['Origin'].isin(sel_origin)]
-df_census_copy = df_census_copy.loc[df_census_copy['Race'].isin(sel_race)]
+#df_census_copy = df_census_copy.loc[df_census_copy['Origin'].isin(sel_origin)]
+#df_census_copy = df_census_copy.loc[df_census_copy['Race'].isin(sel_race)]
 df_census_copy = df_census_copy.loc[df_census_copy['Race_and_Origin'].isin(sel_race_origin)]
 df_census_copy = df_census_copy.loc[df_census_copy['Age_Group'].isin(sel_age_group)]
 
@@ -77,6 +77,9 @@ st.markdown(line_break)
 df_region_population = df_census_copy.groupby(['Region']).sum().reset_index()
 df_region_population['pop_growth'] = df_region_population['Population_2019']/df_region_population['Population_2010']-1
 
+df_region_population_hispanic = df_census_copy[df_census_copy['Race_and_Origin']=='Hispanic'].groupby(['Region']).sum().reset_index()
+df_region_population_hispanic['pop_growth'] = df_region_population_hispanic['Population_2019']/df_region_population_hispanic['Population_2010']-1
+
 bar_region_population = alt.Chart(df_region_population, title = '2019 Population by Region').mark_bar().encode(
     x = alt.X('Region:O', axis=alt.Axis(title='Region'), sort=['South', 'West', 'Midwest', 'North']),
     y = alt.Y('Population_2019', axis = alt.Axis( title= '2019 Population', format ='~s')),
@@ -88,7 +91,30 @@ line_region_population = alt.Chart(df_region_population).mark_line(stroke='#FFA5
     alt.Y('pop_growth',axis=alt.Axis(title='Growth', titleColor='#FFA500', format='%')),
     tooltip=['Region', alt.Tooltip('Population_2019', format='.3s', title='Pop. 2019') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth')]
 ).properties(width=600)
+
+
+
+bar_region_population_hispanic = alt.Chart(df_region_population_hispanic, title = '2019 Hispanic Population by Region').mark_bar().encode(
+    x = alt.X('Region:O', axis=alt.Axis(title='Region'), sort=['South', 'West', 'Midwest', 'North']),
+    y = alt.Y('Population_2019', axis = alt.Axis( title= '2019 Population', format ='~s')),
+    tooltip=['Region', alt.Tooltip('Population_2019', format='.3s', title='Pop. 2019') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth')]
+).properties(width=600)
+
+
+line_region_population_hispanic = alt.Chart(df_region_population_hispanic).mark_line(stroke='#FFA500', interpolate='monotone', point=alt.OverlayMarkDef(color="#FFA500")).encode(
+    alt.X('Region:O', axis=alt.Axis(title='Region'), sort=['South', 'West', 'Midwest', 'North']),
+    alt.Y('pop_growth',axis=alt.Axis(title='Growth', titleColor='#FFA500', format='%')),
+    tooltip=['Region', alt.Tooltip('Population_2019', format='.3s', title='Pop. 2019') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth')]
+).properties(width=600)
+
+st.write('1) South and West regions which account for close to two thirds of the US population also had the highest growth rates.')
+
 st.altair_chart(alt.layer(bar_region_population, line_region_population).resolve_scale(y = 'independent'))
+st.altair_chart(alt.layer(bar_region_population_hispanic, line_region_population_hispanic).resolve_scale(y = 'independent'))
+
+#st.write(df_region_population_hispanic )
+
+
 st.markdown(line_break)
 
 
