@@ -194,22 +194,22 @@ ax_2019.pie(df_race_origin_population['Population_2019'], labels=df_race_origin_
 ax_2019.set_title('2019 Population Makeup')
 
 
-#base_2010_pop = alt.Chart(df_race_origin_population, title = '2010 Population by Race and Origin').encode(
-#    theta=alt.Theta("Population_2010:Q", stack=True), color=alt.Color("Race_and_Origin:N")
-#)
-#pie_2010_pop = base_2010_pop.mark_arc(outerRadius=120).properties(width=600, height = 400)
-#text_2010_pop = base_2010_pop.mark_text(radius=150, size=10).encode(alt.Text("Population_2010", format ='.3s')).properties(width=600, height = 400)
+base_2010_pop = alt.Chart(df_race_origin_population, title = '2010 Population by Race and Origin').encode(
+    theta=alt.Theta("Population_2010:Q", stack=True), color=alt.Color("Race_and_Origin:N")
+)
+pie_2010_pop = base_2010_pop.mark_arc(outerRadius=120).properties(width=600, height = 400)
+text_2010_pop = base_2010_pop.mark_text(radius=150, size=10).encode(alt.Text("Population_2010", format ='.3s')).properties(width=600, height = 400)
 
 
-#base_2019_pop = alt.Chart(df_race_origin_population, title = '2019 Population by Race and Origin').encode(
-#    theta=alt.Theta("Population_2019:Q", stack=True), color=alt.Color("Race_and_Origin:N")
-#)
-#pie_2019_pop = base_2019_pop.mark_arc(outerRadius=120).properties(width=600, height = 400)
-#text_2019_pop = base_2019_pop.mark_text(radius=140, size=10).encode(alt.Text("Population_2019", format ='.3s')).properties(width=600, height = 400)
+base_2019_pop = alt.Chart(df_race_origin_population, title = '2019 Population by Race and Origin').encode(
+    theta=alt.Theta("Population_2019:Q", stack=True), color=alt.Color("Race_and_Origin:N")
+)
+pie_2019_pop = base_2019_pop.mark_arc(outerRadius=120).properties(width=600, height = 400)
+text_2019_pop = base_2019_pop.mark_text(radius=140, size=10).encode(alt.Text("Population_2019", format ='.3s')).properties(width=600, height = 400)
 
 
-#st.altair_chart(pie_2010_pop + text_2010_pop)
-#st.altair_chart(pie_2019_pop + text_2019_pop)
+st.altair_chart(pie_2010_pop + text_2010_pop)
+st.altair_chart(pie_2019_pop + text_2019_pop)
 #st.altair_chart(pie_2019_pop + text_2019_pop | pie_2010_pop + text_2010_pop)
 
 st.pyplot(fig_2010)
