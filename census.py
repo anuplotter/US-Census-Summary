@@ -1,3 +1,4 @@
+
 from altair.vegalite.v4.schema.channels import Tooltip
 from altair.vegalite.v4.schema.core import LabelOverlap, TooltipContent
 import streamlit as st
@@ -7,6 +8,15 @@ import altair as alt
 import math as math
 import matplotlib.pyplot as plt
 from streamlit.elements.iframe import IframeMixin
+
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
 
