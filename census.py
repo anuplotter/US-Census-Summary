@@ -102,13 +102,13 @@ df_region_population['pop_growth'] = df_region_population['Population_2020']/df_
 bar_region_population = alt.Chart(df_region_population, title = '2020 Population by Region').mark_bar().encode(
     x = alt.X('Region:O', axis=alt.Axis(title='Census Region'), sort=['South', 'West', 'Midwest', 'North']),
     y = alt.Y('Population_2020', axis = alt.Axis( title= '2020 Population', format ='~s')),
-    tooltip=['Region', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2010')]
+    tooltip=['Region', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')]
 ).properties(width=600)
 
 line_region_population = alt.Chart(df_region_population).mark_line(stroke='#FFA500', interpolate='monotone', point=alt.OverlayMarkDef(color="orange")).encode(
     alt.X('Region:O', axis=alt.Axis(title='Census Region'), sort=['South', 'West', 'Midwest', 'North']),
-    alt.Y('pop_growth',axis=alt.Axis(title='Growth Rate 2010 to 2010', titleColor='#FFA500', format='%')),
-    tooltip=['Region', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2010')]
+    alt.Y('pop_growth',axis=alt.Axis(title='Growth Rate 2010 to 2020', titleColor='#FFA500', format='%')),
+    tooltip=['Region', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')]
 ).properties(width=600)
 
 
@@ -118,14 +118,14 @@ df_region_population_hispanic['pop_growth'] = df_region_population_hispanic['Pop
 bar_region_population_hispanic = alt.Chart(df_region_population_hispanic, title = '2020 Hispanic Population by Region').mark_bar().encode(
     x = alt.X('Region:O', axis=alt.Axis(title='Census Region'), sort=['South', 'West', 'Midwest', 'North']),
     y = alt.Y('Population_2020', axis = alt.Axis( title= '2020 Population', format ='~s')),
-    tooltip=['Region', 'Origin', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2010')],
+    tooltip=['Region', 'Origin', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')],
     color ='Origin'
 ).properties(width=700)
 
 line_region_population_hispanic = alt.Chart(df_region_population_hispanic).mark_line(stroke='blue', interpolate='monotone', point=alt.OverlayMarkDef(color="blue")).encode(
     alt.X('Region:O', axis=alt.Axis(title='Census Region'), sort=['South', 'West', 'Midwest', 'North']),
-    alt.Y('pop_growth',axis=alt.Axis(title='Growth Rate 2010 to 2010', titleColor='blue', format='%'),scale=alt.Scale(domain=[-0.1, 0.3]) ),
-    tooltip=['Region', 'Origin', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2010')],
+    alt.Y('pop_growth',axis=alt.Axis(title='Growth Rate 2010 to 2020', titleColor='blue', format='%'),scale=alt.Scale(domain=[-0.1, 0.3]) ),
+    tooltip=['Region', 'Origin', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')],
     color = 'Origin',
     strokeDash = 'Origin'
 ).properties(width=700)
@@ -141,37 +141,34 @@ st.markdown(line_break)
 #---------------------------------------------------------------------------------------
 #CHARTS-STATE
 df_state_population = df_census_copy.groupby(['State']).sum().reset_index()
-df_state_population['pop_growth'] = df_state_population['Population_2020']/df_state_population['Population_2010']-1
-#df_state_population['Population_2020_numerize'] = num.numerize(df_state_population['Population_2020']*1.0)
-
 df_state_population_sorted = df_state_population.sort_values(by=['Population_2020'], ascending=False).reset_index(drop=True)
-
-#num_states = df_state_population_sorted['State'].value_counts()
-#num_states = df_state_population_sorted['State'].unique()
-#st.write(num_states.dtypes)
-#st.write(num_states)
+df_state_population_sorted['State_v2'] = np.where(df_state_population_sorted.index <=20,df_state_population_sorted['State'],'Others')
+df_state_population_sorted['State_v2_rank'] = np.where(df_state_population_sorted.index <=20,df_state_population_sorted.index,21)
+df_state_population_sorted = df_state_population_sorted.groupby(['State_v2','State_v2_rank']).sum().reset_index()
+df_state_population_sorted = df_state_population_sorted.sort_values(by=['State_v2_rank'], ascending=True).reset_index(drop=True)
+df_state_population_sorted['pop_growth'] = df_state_population['Population_2020']/df_state_population['Population_2010']-1
 
 bar_state_population = alt.Chart(df_state_population_sorted, title = '2020 Population by State').mark_bar().encode(
-    x = alt.X('State:O', axis=alt.Axis(title='State'), sort = None),
+    x = alt.X('State_v2:O', axis=alt.Axis(title='State'), sort = None),
     y = alt.Y('Population_2020', axis = alt.Axis( title= '2020 Population', format ='~s')),
-    tooltip=['State', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2010')]
+    tooltip=[alt.Tooltip('State_v2', title='State'), alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')]
 ).properties(width=600)
 
 line_state_population = alt.Chart(df_state_population_sorted).mark_line(stroke='#FFA500', interpolate='monotone', point=alt.OverlayMarkDef(color="orange")).encode(
-    alt.X('State:O', axis=alt.Axis(title='State'), sort = None),
-    alt.Y('pop_growth',axis=alt.Axis(title='Growth Rate 2010 to 2010', titleColor='#FFA500', format='%')),
-    tooltip=['State', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2010')]
+    alt.X('State_v2:O', axis=alt.Axis(title='State'), sort = None),
+    alt.Y('pop_growth',axis=alt.Axis(title='Growth Rate 2010 to 2020', titleColor='#FFA500', format='%')),
+    tooltip=[alt.Tooltip('State_v2', title='State'), alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')]
 ).properties(width=600)
 
 st.altair_chart(alt.layer(bar_state_population, line_state_population).resolve_scale(y = 'independent'))
 
 bubble_state_population = alt.Chart(df_state_population_sorted, title = 'Population and Growth by State (between 2010 and 2020) ').mark_point(filled=True, opacity=0.5).encode(
     alt.X('Population_2010', axis = alt.Axis( title= '2010 Population', format = '~s')),
-    alt.Y('pop_growth', axis = alt.Axis( title= 'Growth Rate 2010 to 2010', format='%')),
-    size='Population_2020',
-    color ='State',
-    tooltip = ['State', alt.Tooltip('Population_2020', format='.3s', title ='Pop. 2020'), alt.Tooltip('Population_2010', format='.3s', title ='Pop. 2010'), alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2010')]
-).properties(height=400,width=700).interactive()
+    alt.Y('pop_growth', axis = alt.Axis( title= 'Growth Rate 2010 to 2020', format='%')),
+    size=alt.Size('Population_2020', legend=alt.Legend(title='2020 Population')),
+    color=alt.Color('State_v2', legend=alt.Legend(title='State')),
+    tooltip = [alt.Tooltip('State_v2', title='State'), alt.Tooltip('Population_2020', format='.3s', title ='Pop. 2020'), alt.Tooltip('Population_2010', format='.3s', title ='Pop. 2010'), alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')]
+).properties(height=500,width=700).interactive()
 
 st.altair_chart(bubble_state_population)
 
