@@ -218,19 +218,19 @@ area_age_race_origin_time = alt.Chart(df_race_origin_population_unpivoted, title
    color=alt.Color('Race_and_Origin_v2', legend=alt.Legend(title='Race and Origin'), scale=alt.Scale(
             range=['#b3b3b3', '#54A24B'])),
     tooltip=[alt.Tooltip('Year', title = 'Year'), alt.Tooltip('Race_and_Origin_v2', title='Race and Origin'),alt.Tooltip('Population', format ='.3s', title='Population') ]
-).properties(width=600)
+).properties(width=700)
 
 base_2010_pop = alt.Chart(df_race_origin_population, title = 'Population by Race and Origin in 2010').encode(
      theta=alt.Theta("Population_2010:Q", stack=True, sort='ascending'), color=alt.Color("Race_and_Origin:N", legend=alt.Legend(title="Race and Origin"))
 )
-pie_2010_pop = base_2010_pop.mark_arc(outerRadius=150, innerRadius = 70).properties(width=600, height = 400)
+pie_2010_pop = base_2010_pop.mark_arc(outerRadius=150, innerRadius = 70).properties(width=700, height = 400)
 text_2010_pop = base_2010_pop.mark_text(radius=170, size=10).encode(alt.Text("Population_2010", format ='.3s')).properties(width=600, height = 400)
 
 base_2010_pop_tot = alt.Chart(df_race_origin_population_unpivoted_2010).encode(
     theta=alt.Theta("sum(Population):Q")
     #, color=alt.Color("Race_and_Origin_v2:N")
 )
-pie_2010_pop_tot = base_2010_pop_tot.mark_arc(outerRadius=69, color = 'beige').properties(width=600, height = 400)
+pie_2010_pop_tot = base_2010_pop_tot.mark_arc(outerRadius=69, color = 'beige').properties(width=700, height = 400)
 text_2010_pop_tot = base_2010_pop_tot.mark_text(radius=0, size=10, color = 'black').encode(alt.Text("sum(Population)", format ='.3s')).properties(width=600, height = 400)
 
 
@@ -238,14 +238,14 @@ text_2010_pop_tot = base_2010_pop_tot.mark_text(radius=0, size=10, color = 'blac
 base_2020_pop = alt.Chart(df_race_origin_population, title = 'Population by Race and Origin in 2020').encode(
     theta=alt.Theta("Population_2020:Q", stack=True, sort='ascending'), color=alt.Color("Race_and_Origin:N", legend=alt.Legend(title="Race and Origin"))
 )
-pie_2020_pop = base_2020_pop.mark_arc(outerRadius=150, innerRadius = 70).properties(width=600, height = 400)
+pie_2020_pop = base_2020_pop.mark_arc(outerRadius=150, innerRadius = 70).properties(width=700, height = 400)
 text_2020_pop = base_2020_pop.mark_text(radius=170, size=10).encode(alt.Text("Population_2020", format ='.3s')).properties(width=600, height = 400)
 
 base_2020_pop_tot = alt.Chart(df_race_origin_population_unpivoted_2020).encode(
     theta=alt.Theta("sum(Population):Q")
     #, color=alt.Color("Race_and_Origin_v2:N")
 )
-pie_2020_pop_tot = base_2020_pop_tot.mark_arc(outerRadius=69, color = 'beige').properties(width=600, height = 400)
+pie_2020_pop_tot = base_2020_pop_tot.mark_arc(outerRadius=69, color = 'beige').properties(width=700, height = 400)
 text_2020_pop_tot = base_2020_pop_tot.mark_text(radius=0, size=10, color = 'black').encode(alt.Text("sum(Population)", format ='.3s')).properties(width=600, height = 400)
 
 
