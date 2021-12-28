@@ -1,4 +1,5 @@
-
+#---------------------------------------------------------------------------------------
+#IMPORTS
 from altair.vegalite.v4.schema.channels import Tooltip
 from altair.vegalite.v4.schema.core import LabelOverlap, TooltipContent
 import streamlit as st
@@ -9,6 +10,7 @@ import math as math
 import matplotlib.pyplot as plt
 from streamlit.elements.iframe import IframeMixin
 
+#HIDING STREAMLIT ELEMENTS
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
@@ -18,19 +20,20 @@ hide_st_style = """
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
+#st.header('plot-ai.com')
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
 
-#READING CSV
+#---------------------------------------------------------------------------------------
+#READING RAW DATA
 #df_census = pd.read_csv("C:/Users/anupm/OneDrive/Desktop/Plot AI/Datasets/Al/Census/Census.csv")
 url_census='https://drive.google.com/file/d/1GmjBiRnGWcMVlQEt_iRYpzsOnxZweWGJ/view?usp=sharing'
 url_census_updated = 'https://drive.google.com/file/d/1zcNMO5aAFt4CgERA9qzozuhQ1xR7pUpX/view?usp=sharing'
 url2='https://drive.google.com/uc?id=' + url_census_updated.split('/')[-2]
 df_census = pd.read_csv(url2)
 
-Filters = ''
 
-#MULTISLECT
-
+#---------------------------------------------------------------------------------------
+#SETTING MULTISLECT
 #Unique option in select widget
 st.sidebar.header('Filter by any dimension')
 sel_origin = st.sidebar.multiselect('Origin:', pd.Series(np.append('All', sorted(df_census.Origin.unique()))), default='All')
@@ -61,8 +64,8 @@ if "All" in sel_age_group:
     sel_age_group = df_census.Age_Group.unique()
 
 
-
-#DATA MANIPULATION
+#---------------------------------------------------------------------------------------
+#DATA MANIPULATION AND FILTERING
 df_census_copy = df_census
 
 df_census_copy = df_census_copy.loc[df_census_copy['Region'].isin(sel_region)]
@@ -77,6 +80,7 @@ df_census_copy = df_census_copy.loc[df_census_copy['Age_Group'].isin(sel_age_gro
 df_census_copy_unpivoted = df_census_copy.melt(id_vars=['Region', 'Division', 'State', 'Age_Group','Sex', 'Race_and_Origin','Race', 'Origin'], var_name='Population_Year', value_name='Population')
 line_break = '''---'''
 
+#---------------------------------------------------------------------------------------
 #SUMMARY
 #st.write('States selected are:' , sel_state)
 growth = df_census_copy['Population_2020'].sum()/df_census_copy['Population_2010'].sum()-1
@@ -87,10 +91,10 @@ st.write('**2010 Population:**', str(int(df_census_copy['Population_2010'].sum()
 st.write('**2020 Population:**', str(int(df_census_copy['Population_2020'].sum()/1e6)),' M', '(growth rate was:', percentage_growth, ')' )
 st.markdown(line_break)
 
-
+#---------------------------------------------------------------------------------------
 #CHARTS
-
-#REGION
+#---------------------------------------------------------------------------------------
+#CHARTS-REGION
 df_region_population = df_census_copy.groupby(['Region']).sum().reset_index()
 df_region_population['pop_growth'] = df_region_population['Population_2020']/df_region_population['Population_2010']-1
 
@@ -134,13 +138,18 @@ st.altair_chart(alt.layer(bar_region_population_hispanic, line_region_population
 
 st.markdown(line_break)
 
-
-#STATE
+#---------------------------------------------------------------------------------------
+#CHARTS-STATE
 df_state_population = df_census_copy.groupby(['State']).sum().reset_index()
 df_state_population['pop_growth'] = df_state_population['Population_2020']/df_state_population['Population_2010']-1
 #df_state_population['Population_2020_numerize'] = num.numerize(df_state_population['Population_2020']*1.0)
 
 df_state_population_sorted = df_state_population.sort_values(by=['Population_2020'], ascending=False).reset_index(drop=True)
+
+#num_states = df_state_population_sorted['State'].value_counts()
+#num_states = df_state_population_sorted['State'].unique()
+#st.write(num_states.dtypes)
+#st.write(num_states)
 
 bar_state_population = alt.Chart(df_state_population_sorted, title = '2020 Population by State').mark_bar().encode(
     x = alt.X('State:O', axis=alt.Axis(title='State'), sort = None),
@@ -168,7 +177,8 @@ st.altair_chart(bubble_state_population)
 
 st.markdown(line_break)
 
-#AGE GROUP
+#---------------------------------------------------------------------------------------
+#CHARTS-AGE GROUP
 df_age_group_population = df_census_copy.groupby(['Age_Group', 'Race_and_Origin']).sum().reset_index()
 df_age_group_population['pop_growth'] = df_age_group_population['Population_2020']/df_age_group_population['Population_2010']-1
 stacked_bar_age_race_origin = alt.Chart(df_age_group_population, title = '2020 Population by Age Group').mark_bar().encode(
@@ -191,8 +201,8 @@ st.altair_chart(area_age_race_origin)
 st.markdown(line_break)
 
 
-
-#RACE AND ORIGIN
+#---------------------------------------------------------------------------------------
+#CHARTS-RACE AND ORIGIN
 df_race_origin_population = df_census_copy.groupby(['Race_and_Origin']).sum().reset_index()
 df_race_origin_population['pop_growth'] = df_race_origin_population['Population_2020']/df_race_origin_population['Population_2010']-1
 df_race_origin_population_unpivoted = df_census_copy_unpivoted.groupby(['Race_and_Origin','Population_Year']).sum().reset_index()
@@ -247,3 +257,10 @@ st.altair_chart(pie_2010_pop + text_2010_pop + pie_2010_pop_tot + text_2010_pop_
 st.altair_chart(pie_2020_pop + text_2020_pop + pie_2020_pop_tot + text_2020_pop_tot)
 
 st.markdown(line_break)
+
+#---------------------------------------------------------------------------------------
+#END
+
+#loom_video_5 = '<div style="position: relative; padding-bottom: 66.66666666666666%; height: 0;"><iframe src="https://www.loom.com/embed/bc1e95bd09aa4281a389fe027ae2b035" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>'
+#st.markdown(loom_video_5, unsafe_allow_html=True)
+
