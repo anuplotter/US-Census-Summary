@@ -23,6 +23,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 #st.header('plot-ai.com')
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
 
+
 #---------------------------------------------------------------------------------------
 #READING RAW DATA
 #df_census = pd.read_csv("C:/Users/anupm/OneDrive/Desktop/Plot AI/Datasets/Al/Census/Census.csv")
@@ -77,7 +78,6 @@ df_census_copy = df_census_copy.loc[df_census_copy['Race'].isin(sel_race)]
 df_census_copy = df_census_copy.loc[df_census_copy['Race_and_Origin'].isin(sel_race_origin)]
 df_census_copy = df_census_copy.loc[df_census_copy['Age_Group'].isin(sel_age_group)]
 
-df_census_copy_unpivoted = df_census_copy.melt(id_vars=['Region', 'Division', 'State', 'Age_Group','Sex', 'Race_and_Origin','Race', 'Origin'], var_name='Population_Year', value_name='Population')
 line_break = '''---'''
 
 #---------------------------------------------------------------------------------------
@@ -86,7 +86,32 @@ line_break = '''---'''
 growth = df_census_copy['Population_2020'].sum()/df_census_copy['Population_2010'].sum()-1
 percentage_growth = "{:.1%}".format(growth)
 
-st.header('US Census Data Summary')
+#CONTENT FROM AL AND TEAM
+st.header('Size Multicultural Business Opportunities!')
+from pathlib import Path
+def read_markdown_file(markdown_file):
+    return Path(markdown_file).read_text()
+
+intro_markdown = read_markdown_file("introduction.md")
+st.markdown(intro_markdown, unsafe_allow_html=True)
+
+
+dashboard_usage_markdown = read_markdown_file("dashboard_usage.md")
+with st.expander("Dashboard Usage Guide:"):
+    st.markdown(dashboard_usage_markdown, unsafe_allow_html=True)
+
+end_contact_markdown = read_markdown_file("end_contact.md")
+st.markdown(end_contact_markdown, unsafe_allow_html=True)
+
+#dashboard_usage_check = st.checkbox("Dashboard Usage Details")
+#if dashboard_usage_check:
+#    st.markdown(dashboard_usage_markdown, unsafe_allow_html=True)
+#st.markdown(line_break)
+
+
+st.markdown(line_break)
+
+st.write('**US Census Summary**')
 st.write('**2010 Population:**', str(int(df_census_copy['Population_2010'].sum()/1e6)),' M')
 st.write('**2020 Population:**', str(int(df_census_copy['Population_2020'].sum()/1e6)),' M', '(growth rate was:', percentage_growth, ')' )
 st.markdown(line_break)
@@ -177,8 +202,10 @@ st.markdown(line_break)
 #---------------------------------------------------------------------------------------
 #CHARTS-AGE GROUP
 df_age_group_population = df_census_copy.groupby(['Age_Group', 'Race_and_Origin']).sum().reset_index()
+#df_age_group_population = df_census_copy.groupby(['Age_Group', 'Race_and_Origin','Race_and_Origin_rank']).sum().reset_index()
+#df_age_group_population = df_age_group_population.sort_values(by=['Race_and_Origin_rank'], ascending=True).reset_index(drop=True)
 df_age_group_population['pop_growth'] = df_age_group_population['Population_2020']/df_age_group_population['Population_2010']-1
-stacked_bar_age_race_origin = alt.Chart(df_age_group_population, title = '2020 Population by Age Group').mark_bar().encode(
+stacked_bar_age_race_origin = alt.Chart(df_age_group_population, title = '2020 Population (# of people) by Age Group').mark_bar().encode(
     x=alt.X('Age_Group', axis = alt.Axis( title= 'Age Group')),
     y=alt.Y('Population_2020', axis = alt.Axis( title= '2020 Population', format = '~s')),
     color=alt.Color('Race_and_Origin', legend=alt.Legend(title='Race and Origin')),
@@ -186,7 +213,7 @@ stacked_bar_age_race_origin = alt.Chart(df_age_group_population, title = '2020 P
 ).properties(width=700)
 
 
-area_age_race_origin = alt.Chart(df_age_group_population, title = '2020 Population by Age Group').mark_area().encode(
+area_age_race_origin = alt.Chart(df_age_group_population, title = '2020 Percentage of the Population by Age Group').mark_area().encode(
     x=alt.X('Age_Group', axis = alt.Axis( title= 'Age Group')),
     y=alt.Y('Population_2020', stack="normalize", axis = alt.Axis( title= '2020 Population', format ='%')),
     color=alt.Color('Race_and_Origin', legend=alt.Legend(title='Race and Origin')),
@@ -202,6 +229,8 @@ st.markdown(line_break)
 #CHARTS-RACE AND ORIGIN
 df_race_origin_population = df_census_copy.groupby(['Race_and_Origin']).sum().reset_index()
 df_race_origin_population['pop_growth'] = df_race_origin_population['Population_2020']/df_race_origin_population['Population_2010']-1
+
+df_census_copy_unpivoted = df_census_copy.melt(id_vars=['Region', 'Division', 'State', 'Age_Group','Sex', 'Race_and_Origin','Race_and_Origin_rank','Race', 'Origin'], var_name='Population_Year', value_name='Population')
 df_race_origin_population_unpivoted = df_census_copy_unpivoted.groupby(['Race_and_Origin','Population_Year']).sum().reset_index()
 df_race_origin_population_unpivoted['Year'] = df_race_origin_population_unpivoted['Population_Year'].str[11:15]
 df_race_origin_population_unpivoted['Race_and_Origin_v2'] = np.where(df_race_origin_population_unpivoted['Race_and_Origin']!= 'White - Not Hispanic', 'Multicultural Consumers', 'White - Not Hispanic')
@@ -224,14 +253,14 @@ base_2010_pop = alt.Chart(df_race_origin_population, title = 'Population by Race
      theta=alt.Theta("Population_2010:Q", stack=True, sort='ascending'), color=alt.Color("Race_and_Origin:N", legend=alt.Legend(title="Race and Origin"))
 )
 pie_2010_pop = base_2010_pop.mark_arc(outerRadius=150, innerRadius = 70).properties(width=700, height = 400)
-text_2010_pop = base_2010_pop.mark_text(radius=170, size=10).encode(alt.Text("Population_2010", format ='.3s')).properties(width=600, height = 400)
+text_2010_pop = base_2010_pop.mark_text(radius=170, size=10).encode(alt.Text("Population_2010", format ='.3s')).properties(width=700, height = 400)
 
 base_2010_pop_tot = alt.Chart(df_race_origin_population_unpivoted_2010).encode(
     theta=alt.Theta("sum(Population):Q")
     #, color=alt.Color("Race_and_Origin_v2:N")
 )
 pie_2010_pop_tot = base_2010_pop_tot.mark_arc(outerRadius=69, color = 'beige').properties(width=700, height = 400)
-text_2010_pop_tot = base_2010_pop_tot.mark_text(radius=0, size=10, color = 'black').encode(alt.Text("sum(Population)", format ='.3s')).properties(width=600, height = 400)
+text_2010_pop_tot = base_2010_pop_tot.mark_text(radius=0, size=10, color = 'black').encode(alt.Text("sum(Population)", format ='.3s')).properties(width=700, height = 400)
 
 
 
@@ -239,14 +268,14 @@ base_2020_pop = alt.Chart(df_race_origin_population, title = 'Population by Race
     theta=alt.Theta("Population_2020:Q", stack=True, sort='ascending'), color=alt.Color("Race_and_Origin:N", legend=alt.Legend(title="Race and Origin"))
 )
 pie_2020_pop = base_2020_pop.mark_arc(outerRadius=150, innerRadius = 70).properties(width=700, height = 400)
-text_2020_pop = base_2020_pop.mark_text(radius=170, size=10).encode(alt.Text("Population_2020", format ='.3s')).properties(width=600, height = 400)
+text_2020_pop = base_2020_pop.mark_text(radius=170, size=10).encode(alt.Text("Population_2020", format ='.3s')).properties(width=700, height = 400)
 
 base_2020_pop_tot = alt.Chart(df_race_origin_population_unpivoted_2020).encode(
     theta=alt.Theta("sum(Population):Q")
     #, color=alt.Color("Race_and_Origin_v2:N")
 )
 pie_2020_pop_tot = base_2020_pop_tot.mark_arc(outerRadius=69, color = 'beige').properties(width=700, height = 400)
-text_2020_pop_tot = base_2020_pop_tot.mark_text(radius=0, size=10, color = 'black').encode(alt.Text("sum(Population)", format ='.3s')).properties(width=600, height = 400)
+text_2020_pop_tot = base_2020_pop_tot.mark_text(radius=0, size=10, color = 'black').encode(alt.Text("sum(Population)", format ='.3s')).properties(width=700, height = 400)
 
 
 st.altair_chart(area_age_race_origin_time)
