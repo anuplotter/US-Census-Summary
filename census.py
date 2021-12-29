@@ -108,7 +108,7 @@ st.write(whats_next, unsafe_allow_html=False)
 
 st.markdown(line_break)
 
-st.subheader('**US Census**')
+st.subheader('Summary of US Census')
 st.write('**2010 Population:**', str(int(df_census_copy['Population_2010'].sum()/1e6)),' M')
 st.write('**2020 Population:**', str(int(df_census_copy['Population_2020'].sum()/1e6)),' M', '(growth rate was:', percentage_growth, ')' )
 st.markdown(line_break)
@@ -117,13 +117,13 @@ st.markdown(line_break)
 #CHARTS
 #---------------------------------------------------------------------------------------
 #CHARTS-REGION
-st.subheader('**Census Regions**')
+st.subheader('Breakdown by Census Regions')
 
 df_region_population = df_census_copy.groupby(['Region']).sum().reset_index()
 df_region_population['pop_growth'] = df_region_population['Population_2020']/df_region_population['Population_2010']-1
 
 
-bar_region_population = alt.Chart(df_region_population, title = '2020 Population by Region').mark_bar().encode(
+bar_region_population = alt.Chart(df_region_population, title = '2020 Population by Census Region').mark_bar().encode(
     x = alt.X('Region:O', axis=alt.Axis(title='Census Region'), sort=['South', 'West', 'Midwest', 'North']),
     y = alt.Y('Population_2020', axis = alt.Axis( title= '2020 Population', format ='~s')),
     tooltip=['Region', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')]
@@ -139,7 +139,7 @@ line_region_population = alt.Chart(df_region_population).mark_line(stroke='#FFA5
 df_region_population_hispanic = df_census_copy.groupby(['Region','Origin']).sum().reset_index()
 df_region_population_hispanic['pop_growth'] = df_region_population_hispanic['Population_2020']/df_region_population_hispanic['Population_2010']-1
 
-bar_region_population_hispanic = alt.Chart(df_region_population_hispanic, title = '2020 Hispanic Population by Region').mark_bar().encode(
+bar_region_population_hispanic = alt.Chart(df_region_population_hispanic, title = '2020 Hispanic Population by CensusRegion').mark_bar().encode(
     x = alt.X('Region:O', axis=alt.Axis(title='Census Region'), sort=['South', 'West', 'Midwest', 'North']),
     y = alt.Y('Population_2020', axis = alt.Axis( title= '2020 Population', format ='~s')),
     tooltip=['Region', 'Origin', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')],
@@ -156,15 +156,11 @@ line_region_population_hispanic = alt.Chart(df_region_population_hispanic).mark_
 
 st.altair_chart(alt.layer(bar_region_population, line_region_population).resolve_scale(y = 'independent'))
 st.altair_chart(alt.layer(bar_region_population_hispanic, line_region_population_hispanic).resolve_scale(y = 'independent'))
-
-#st.write(df_region_population_hispanic )
-
-
 st.markdown(line_break)
 
 #---------------------------------------------------------------------------------------
 #CHARTS-STATE
-st.subheader('**States**')
+st.subheader('Trends by State')
 df_state_population = df_census_copy.groupby(['State']).sum().reset_index()
 df_state_population_sorted = df_state_population.sort_values(by=['Population_2020'], ascending=False).reset_index(drop=True)
 df_state_population_sorted['State_v2'] = np.where(df_state_population_sorted.index <=25,df_state_population_sorted['State'],'Others - Avg.')
@@ -196,12 +192,11 @@ bubble_state_population = alt.Chart(df_state_population_sorted, title = 'Populat
 ).properties(height=500,width=700).interactive()
 
 st.altair_chart(bubble_state_population)
-
 st.markdown(line_break)
 
 #---------------------------------------------------------------------------------------
 #CHARTS-AGE GROUP
-st.subheader('**Age Groups**')
+st.subheader('Changes by Age Group')
 df_age_group_population = df_census_copy.groupby(['Age_Group', 'Race_and_Origin']).sum().reset_index()
 #df_age_group_population = df_census_copy.groupby(['Age_Group', 'Race_and_Origin','Race_and_Origin_rank']).sum().reset_index()
 #df_age_group_population = df_age_group_population.sort_values(by=['Race_and_Origin_rank'], ascending=True).reset_index(drop=True)
@@ -225,10 +220,9 @@ st.altair_chart(stacked_bar_age_race_origin)
 st.altair_chart(area_age_race_origin)
 st.markdown(line_break)
 
-
 #---------------------------------------------------------------------------------------
 #CHARTS-RACE AND ORIGIN
-st.subheader('**Race and Origin**')
+st.subheader('Distribution by Race and Origin')
 df_race_origin_population = df_census_copy.groupby(['Race_and_Origin']).sum().reset_index()
 df_race_origin_population['pop_growth'] = df_race_origin_population['Population_2020']/df_race_origin_population['Population_2010']-1
 
@@ -287,8 +281,9 @@ st.altair_chart(pie_2020_pop + text_2020_pop + pie_2020_pop_tot + text_2020_pop_
 
 st.markdown(line_break)
 
-
-st.write('Want this in Excel? Download 👇, signup with [**Plot-AI**] (https://plot-ai.com/) and install add-in')
+#---------------------------------------------------------------------------------------
+#EXCEL DASHBOARD BY PLOT-AI
+st.write('Want this in Excel? Download 👇, signup and install add-in by [**Plot-AI**] (https://plot-ai.com/)')
 with open('Census Data-AI V9.xlsm', 'rb') as f:
    st.download_button('💾 Excel US Census Dashboard', f, file_name='US Census.xlsm')  # Defaults to 'application/octet-stream'
 #---------------------------------------------------------------------------------------
