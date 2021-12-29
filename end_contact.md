@@ -1,2 +1,0 @@
-**What's Next?:**
->When you are [ready](https://www.preferenceanalytics.com/contact-us) to reach out to and connect with these growing markets, [Preference Analytics](https://www.preferenceanalytics.com/) can help you figure out the appropriate [brand positioning, marketing strategies, messaging and product development](https://www.preferenceanalytics.com/solutions) path.

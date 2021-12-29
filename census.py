@@ -85,27 +85,26 @@ growth = df_census_copy['Population_2020'].sum()/df_census_copy['Population_2010
 percentage_growth = "{:.1%}".format(growth)
 
 #CONTENT FROM AL AND TEAM
-st.header('Size Multicultural Business Opportunities!')
+st.title('Quick Size Your Multicultural Business Opportunities!')
+
+clients_ask = "***Our clients often ask us to help them size the business opportunity of U.S. Multicultural Markets - for U.S. Hispanic, African-American/Black, Asian, Multiracial and all others.***"
+free_dash ="***Here's a free dashboard to help you start thinking about Multicultural markets. Use the dashboard for instant factoids into your target market's profile by ethnicity, race, age, gender, and geography... ***"
+st.write(clients_ask, unsafe_allow_html=False)
+st.write(free_dash, unsafe_allow_html=False)
+
 from pathlib import Path
 def read_markdown_file(markdown_file):
     return Path(markdown_file).read_text()
 
-intro_markdown = read_markdown_file("introduction.md")
-st.markdown(intro_markdown, unsafe_allow_html=True)
-
-
 dashboard_usage_markdown = read_markdown_file("dashboard_usage.md")
-with st.expander("Dashboard Usage Guide:"):
+with st.expander("📖 Dashboard Usage Guide:"):
     st.markdown(dashboard_usage_markdown, unsafe_allow_html=True)
 
-end_contact_markdown = read_markdown_file("end_contact.md")
-st.markdown(end_contact_markdown, unsafe_allow_html=True)
+how_to_use = "**How to use?:** ***To explore different scenarios by any of the variables listed in the Filters on the left of the page, select the dropdown arrows and choose what you would like to learn about. To reset, 'X' out your selection and then click 'All' in any of the Filter boxes. If you would like to save a chart, click the 3 dots in the upper right.***"
+st.write(how_to_use, unsafe_allow_html=False)
 
-#dashboard_usage_check = st.checkbox("Dashboard Usage Details")
-#if dashboard_usage_check:
-#    st.markdown(dashboard_usage_markdown, unsafe_allow_html=True)
-#st.markdown(line_break)
-
+whats_next = "**What's Next?** ***When you are [ready](https://www.preferenceanalytics.com/contact-us) to reach out to and connect with these growing markets, [Preference Analytics](https://www.preferenceanalytics.com/) can help you figure out the appropriate [brand positioning, marketing strategies, messaging and product development](https://www.preferenceanalytics.com/solutions) path.***"
+st.write(whats_next, unsafe_allow_html=False)
 
 st.markdown(line_break)
 
@@ -165,9 +164,9 @@ st.markdown(line_break)
 #CHARTS-STATE
 df_state_population = df_census_copy.groupby(['State']).sum().reset_index()
 df_state_population_sorted = df_state_population.sort_values(by=['Population_2020'], ascending=False).reset_index(drop=True)
-df_state_population_sorted['State_v2'] = np.where(df_state_population_sorted.index <=20,df_state_population_sorted['State'],'Others')
-df_state_population_sorted['State_v2_rank'] = np.where(df_state_population_sorted.index <=20,df_state_population_sorted.index,21)
-df_state_population_sorted = df_state_population_sorted.groupby(['State_v2','State_v2_rank']).sum().reset_index()
+df_state_population_sorted['State_v2'] = np.where(df_state_population_sorted.index <=25,df_state_population_sorted['State'],'Others - Avg.')
+df_state_population_sorted['State_v2_rank'] = np.where(df_state_population_sorted.index <=25,df_state_population_sorted.index,26)
+df_state_population_sorted = df_state_population_sorted.groupby(['State_v2','State_v2_rank']).mean().reset_index()
 df_state_population_sorted = df_state_population_sorted.sort_values(by=['State_v2_rank'], ascending=True).reset_index(drop=True)
 df_state_population_sorted['pop_growth'] = df_state_population['Population_2020']/df_state_population['Population_2010']-1
 
@@ -283,14 +282,9 @@ st.altair_chart(pie_2020_pop + text_2020_pop + pie_2020_pop_tot + text_2020_pop_
 
 st.markdown(line_break)
 
+
+st.write('Excel version? Download 👇 and Signup with [**Plot-AI**] (https://plot-ai.com/)')
 with open('Census Data-AI V9.xlsm', 'rb') as f:
-   st.download_button('Download Excel Dashboard by Plot-AI', f, file_name='US Census.xlsm')  # Defaults to 'application/octet-stream'
-
-st.write('Create account @ https://plot-ai.com/')
-
+   st.download_button('💾 Excel US Census Dashboard', f, file_name='US Census.xlsm')  # Defaults to 'application/octet-stream'
 #---------------------------------------------------------------------------------------
 #END
-
-#loom_video_5 = '<div style="position: relative; padding-bottom: 66.66666666666666%; height: 0;"><iframe src="https://www.loom.com/embed/bc1e95bd09aa4281a389fe027ae2b035" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>'
-#st.markdown(loom_video_5, unsafe_allow_html=True)
-
