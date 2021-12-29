@@ -284,6 +284,8 @@ st.altair_chart(pie_2020_pop + text_2020_pop + pie_2020_pop_tot + text_2020_pop_
 
 st.markdown(line_break)
 
+st.write('Powered by Plot-AI: https://plot-ai.com/')
+
 #---------------------------------------------------------------------------------------
 #END
 
