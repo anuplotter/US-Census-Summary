@@ -26,12 +26,10 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 
 #---------------------------------------------------------------------------------------
 #READING RAW DATA
-#df_census = pd.read_csv("C:/Users/anupm/OneDrive/Desktop/Plot AI/Datasets/Al/Census/Census.csv")
-url_census='https://drive.google.com/file/d/1GmjBiRnGWcMVlQEt_iRYpzsOnxZweWGJ/view?usp=sharing'
-url_census_updated = 'https://drive.google.com/file/d/1zcNMO5aAFt4CgERA9qzozuhQ1xR7pUpX/view?usp=sharing'
-url2='https://drive.google.com/uc?id=' + url_census_updated.split('/')[-2]
-df_census = pd.read_csv(url2)
-
+#url_census_updated = 'https://drive.google.com/file/d/1zcNMO5aAFt4CgERA9qzozuhQ1xR7pUpX/view?usp=sharing'
+#url2='https://drive.google.com/uc?id=' + url_census_updated.split('/')[-2]
+#df_census = pd.read_csv(url2)
+df_census = pd.read_csv('census_updated.csv')
 
 #---------------------------------------------------------------------------------------
 #SETTING MULTISLECT
@@ -243,7 +241,7 @@ df_race_origin_population_unpivoted_2020 = df_race_origin_population_unpivoted_2
 
 area_age_race_origin_time = alt.Chart(df_race_origin_population_unpivoted, title = 'Population Trend by Race and Origin').mark_area().encode(
     x=alt.X('Year', axis = alt.Axis( title= 'Year')),
-    y=alt.Y('Population', axis = alt.Axis( title= 'Population')),
+    y=alt.Y('Population', axis = alt.Axis( title= 'Population', format = '~s')),
    color=alt.Color('Race_and_Origin_v2', legend=alt.Legend(title='Race and Origin'), scale=alt.Scale(
             range=['#b3b3b3', '#54A24B'])),
     tooltip=[alt.Tooltip('Year', title = 'Year'), alt.Tooltip('Race_and_Origin_v2', title='Race and Origin'),alt.Tooltip('Population', format ='.3s', title='Population') ]
@@ -282,9 +280,13 @@ st.altair_chart(area_age_race_origin_time)
 st.altair_chart(pie_2010_pop + text_2010_pop + pie_2010_pop_tot + text_2010_pop_tot)
 st.altair_chart(pie_2020_pop + text_2020_pop + pie_2020_pop_tot + text_2020_pop_tot)
 
+
 st.markdown(line_break)
 
-st.write('Powered by Plot-AI: https://plot-ai.com/')
+with open('Census Data-AI V9.xlsm', 'rb') as f:
+   st.download_button('Download Excel Dashboard by Plot-AI', f, file_name='US Census.xlsm')  # Defaults to 'application/octet-stream'
+
+st.write('Create account @ https://plot-ai.com/')
 
 #---------------------------------------------------------------------------------------
 #END
