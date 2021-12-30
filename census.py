@@ -9,6 +9,9 @@ import altair as alt
 import math as math
 import matplotlib.pyplot as plt
 from streamlit.elements.iframe import IframeMixin
+import time as time
+
+time.sleep(1)
 
 #HIDING STREAMLIT ELEMENTS
 hide_st_style = """
@@ -288,3 +291,4 @@ with open('Census Data-AI V9.xlsm', 'rb') as f:
    st.download_button('💾 Excel US Census Dashboard', f, file_name='US Census.xlsm')  # Defaults to 'application/octet-stream'
 #---------------------------------------------------------------------------------------
 #END
+
