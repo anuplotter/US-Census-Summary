@@ -23,7 +23,7 @@ hide_st_style = """
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-#st.header('plot-ai.com')
+
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
 
 
@@ -83,7 +83,6 @@ line_break = '''---'''
 
 #---------------------------------------------------------------------------------------
 #SUMMARY
-#st.write('States selected are:' , sel_state)
 growth = df_census_copy['Population_2020'].sum()/df_census_copy['Population_2010'].sum()-1
 percentage_growth = "{:.1%}".format(growth)
 
@@ -109,12 +108,19 @@ st.write(how_to_use, unsafe_allow_html=False)
 whats_next = "**What's Next?** ***When you are [ready](https://www.preferenceanalytics.com/contact-us) to reach out to and connect with these growing markets, [Preference Analytics](https://www.preferenceanalytics.com/) can help you figure out the appropriate [brand positioning, marketing strategies, messaging and product development](https://www.preferenceanalytics.com/solutions) path.***"
 st.write(whats_next, unsafe_allow_html=False)
 
+
 st.markdown(line_break)
 
-st.subheader('Summary of US Census')
-st.write('**2010 Population:**', str(int(df_census_copy['Population_2010'].sum()/1e6)),' M')
-st.write('**2020 Population:**', str(int(df_census_copy['Population_2020'].sum()/1e6)),' M', '(growth rate was:', percentage_growth, ')' )
+st.subheader('Total Population per US Census')
+#st.write('**2010 Population:**', str(int(df_census_copy['Population_2010'].sum()/1e6)),' M')
+#st.write('**2020 Population:**', str(int(df_census_copy['Population_2020'].sum()/1e6)),' M', '(growth rate was:', percentage_growth, ')' )
+
+col1, col2 = st.columns(2)
+col1.metric("2010", str(int(df_census_copy['Population_2010'].sum()/1e6))+ "M")
+col2.metric("2020", str(int(df_census_copy['Population_2020'].sum()/1e6))+ "M", percentage_growth)
+#col3.metric("Growth (2010-2020)", percentage_growth, "")
 st.markdown(line_break)
+
 
 #---------------------------------------------------------------------------------------
 #CHARTS
@@ -142,7 +148,7 @@ line_region_population = alt.Chart(df_region_population).mark_line(stroke='#FFA5
 df_region_population_hispanic = df_census_copy.groupby(['Region','Origin']).sum().reset_index()
 df_region_population_hispanic['pop_growth'] = df_region_population_hispanic['Population_2020']/df_region_population_hispanic['Population_2010']-1
 
-bar_region_population_hispanic = alt.Chart(df_region_population_hispanic, title = '2020 Hispanic Population by CensusRegion').mark_bar().encode(
+bar_region_population_hispanic = alt.Chart(df_region_population_hispanic, title = '2020 Hispanic Population by Census Region').mark_bar().encode(
     x = alt.X('Region:O', axis=alt.Axis(title='Census Region'), sort=['South', 'West', 'Midwest', 'North']),
     y = alt.Y('Population_2020', axis = alt.Axis( title= '2020 Population', format ='~s')),
     tooltip=['Region', 'Origin', alt.Tooltip('Population_2020', format='.3s', title='Pop. 2020') ,alt.Tooltip('pop_growth:Q', format='.1%', title='Growth Rate 2010 to 2020')],
