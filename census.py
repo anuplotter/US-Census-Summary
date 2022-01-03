@@ -88,8 +88,8 @@ growth = df_census_copy['Population_2020'].sum()/df_census_copy['Population_2010
 percentage_growth = "{:.1%}".format(growth)
 
 #CONTENT FROM AL AND TEAM
-st.title('Quick Size Your Multicultural Business Opportunities!')
-
+st.title('Multicultural Dashboard')
+st.header('Quick Size Your Multicultural Business Opportunities!')
 clients_ask = "***Our clients often ask us to help them size the business opportunity of U.S. Multicultural Markets - for U.S. Hispanic, African-American/Black, Asian, Multiracial and all others.***"
 free_dash ="***Here's a free dashboard to help you start thinking about Multicultural markets. Use the dashboard for instant factoids into your target market's profile by ethnicity, race, age, gender, and geography... ***"
 st.write(clients_ask, unsafe_allow_html=False)
@@ -103,7 +103,7 @@ dashboard_usage_markdown = read_markdown_file("dashboard_usage.md")
 with st.expander("📖 Dashboard Usage Guide:"):
     st.markdown(dashboard_usage_markdown, unsafe_allow_html=True)
 
-how_to_use = "**How to use?:** ***To explore different scenarios by any of the variables listed in the Filters on the left of the page, select the dropdown arrows and choose what you would like to learn about. To reset, 'X' out your selection and then click 'All' in any of the Filter boxes. If you would like to save a chart, click the 3 dots in the upper right.***"
+how_to_use = "**How to use:** ***To explore different scenarios by any of the variables listed in the Filters on the left of the page, select the dropdown arrows and choose what you would like to learn about. To reset, 'X' out your selection and then click 'All' in any of the Filter boxes. If you would like to save a chart, click the 3 dots in the upper right.***"
 st.write(how_to_use, unsafe_allow_html=False)
 
 whats_next = "**What's Next?** ***When you are [ready](https://www.preferenceanalytics.com/contact-us) to reach out to and connect with these growing markets, [Preference Analytics](https://www.preferenceanalytics.com/) can help you figure out the appropriate [brand positioning, marketing strategies, messaging and product development](https://www.preferenceanalytics.com/solutions) path.***"
