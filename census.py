@@ -115,10 +115,16 @@ st.subheader('Total Population per US Census')
 #st.write('**2010 Population:**', str(int(df_census_copy['Population_2010'].sum()/1e6)),' M')
 #st.write('**2020 Population:**', str(int(df_census_copy['Population_2020'].sum()/1e6)),' M', '(growth rate was:', percentage_growth, ')' )
 
-col1, col2 = st.columns(2)
+#col1, col2 = st.columns(2)
+#col1.metric("2010", str(int(df_census_copy['Population_2010'].sum()/1e6))+ "M")
+#col2.metric("2020", str(int(df_census_copy['Population_2020'].sum()/1e6))+ "M", percentage_growth)
+#col3.metric("Growth (2010-2020)", percentage_growth, "")
+#st.markdown(line_break)
+
+col1, col2, col3 = st.columns(3)
 col1.metric("2010", str(int(df_census_copy['Population_2010'].sum()/1e6))+ "M")
 col2.metric("2020", str(int(df_census_copy['Population_2020'].sum()/1e6))+ "M", percentage_growth)
-#col3.metric("Growth (2010-2020)", percentage_growth, "")
+col3.metric("Change (2010 to 2020)", str(int((df_census_copy['Population_2020'].sum()-df_census_copy['Population_2010'].sum())/1e6))+ "M")
 st.markdown(line_break)
 
 
