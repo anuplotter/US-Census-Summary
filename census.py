@@ -11,6 +11,14 @@ import matplotlib.pyplot as plt
 from streamlit.elements.iframe import IframeMixin
 import time as time
 
+st.set_page_config(
+     page_title="Multicultural Dashboard",
+     page_icon="📋",
+     #layout="wide",
+     #initial_sidebar_state="expanded",
+     #menu_items={'Get Help': 'https://www.extremelycoolapp.com/help','Report a bug': "https://www.extremelycoolapp.com/bug",'About': "# This is a header. This is an *extremely* cool app!"}
+ )
+
 time.sleep(1)
 
 #HIDING STREAMLIT ELEMENTS
@@ -25,7 +33,6 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 
 
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
-
 
 #---------------------------------------------------------------------------------------
 #READING RAW DATA
@@ -87,7 +94,8 @@ growth = df_census_copy['Population_2020'].sum()/df_census_copy['Population_2010
 percentage_growth = "{:.1%}".format(growth)
 
 #CONTENT FROM AL AND TEAM
-st.title('Multicultural Dashboard')
+st.markdown("<h1 style='text-align: center; color: black;'>Multicultural Dashboard</h1>", unsafe_allow_html=True)
+#st.title('Multicultural Dashboard')
 st.header('Quick Size Your Multicultural Business Opportunities!')
 clients_ask = "***Our clients often ask us to help them size the business opportunity of U.S. Multicultural Markets - for U.S. Hispanic, African-American/Black, Asian, Multiracial and all others.***"
 free_dash ="***Here's a free dashboard to help you start thinking about Multicultural markets. Use the dashboard for instant factoids into your target market's profile by ethnicity, race, age, gender, and geography... ***"
@@ -101,6 +109,7 @@ def read_markdown_file(markdown_file):
 dashboard_usage_markdown = read_markdown_file("dashboard_usage.md")
 with st.expander("📖 Dashboard Usage Guide:"):
     st.markdown(dashboard_usage_markdown, unsafe_allow_html=True)
+
 
 how_to_use = "**How to use:** ***To explore different scenarios by any of the variables listed in the Filters on the left of the page, select the dropdown arrows and choose what you would like to learn about. To reset, 'X' out your selection and then click 'All' in any of the Filter boxes. If you would like to save a chart, click the 3 dots in the upper right.***"
 st.write(how_to_use, unsafe_allow_html=False)
@@ -292,9 +301,6 @@ text_2020_pop_tot = base_2020_pop_tot.mark_text(radius=0, size=10, color = 'blac
 st.altair_chart(area_age_race_origin_time)
 st.altair_chart(pie_2010_pop + text_2010_pop + pie_2010_pop_tot + text_2010_pop_tot)
 st.altair_chart(pie_2020_pop + text_2020_pop + pie_2020_pop_tot + text_2020_pop_tot)
-
-
-st.markdown(line_break)
 
 #---------------------------------------------------------------------------------------
 #EXCEL DASHBOARD BY PLOT-AI
