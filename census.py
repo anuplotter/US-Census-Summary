@@ -305,8 +305,8 @@ st.altair_chart(pie_2020_pop + text_2020_pop + pie_2020_pop_tot + text_2020_pop_
 #---------------------------------------------------------------------------------------
 #EXCEL DASHBOARD BY PLOT-AI
 st.write('Want this in Excel? Download 👇, signup and install add-in by [**Plot-AI**] (https://plot-ai.com/)')
-with open('Census Data-AI V9.xlsm', 'rb') as f:
-   st.download_button('💾 Excel US Census Dashboard', f, file_name='US Census.xlsm')  # Defaults to 'application/octet-stream'
+with open('Multicultural Dashboard US Census.xlsm', 'rb') as f:
+   st.download_button('💾 Excel US Census Dashboard', f, file_name='Multicultural Dashboard US Census.xlsm')  # Defaults to 'application/octet-stream'
 #---------------------------------------------------------------------------------------
 #END
 
