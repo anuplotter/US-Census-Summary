@@ -22,13 +22,13 @@ st.set_page_config(
 time.sleep(1)
 
 #HIDING STREAMLIT ELEMENTS
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
+#hide_st_style = """
+#            <style>
+#            #MainMenu {visibility: hidden;}
+#            footer {visibility: hidden;}
+#            header {visibility: hidden;}
+#            </style>
+#            """
 #st.markdown(hide_st_style, unsafe_allow_html=True)
 
 
