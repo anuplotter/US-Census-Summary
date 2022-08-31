@@ -98,7 +98,7 @@ st.markdown("<h1 style='text-align: center; color: black;'>Multicultural Dashboa
 #st.title('Multicultural Dashboard')
 st.header('Quick Size Your Multicultural Business Opportunities!')
 clients_ask = "***Our clients often ask us to help them size the business opportunity of U.S. Multicultural Markets - for U.S. Hispanic, African-American/Black, Asian, Multiracial and all others.***"
-free_dash ="***Here's a free dashboard to help you start thinking about Multicultural markets. Use the dashboard for instant factoids into your target market's profile by ethnicity, race, age, gender, and geography... ***"
+free_dash ="***Here's a free dashboard to help you start thinking about Multicultural markets. Use the dashboard for instant factoids into your target market's profile by ethnicity, race, age, gender, and geography.***"
 st.write(clients_ask, unsafe_allow_html=False)
 st.write(free_dash, unsafe_allow_html=False)
 
