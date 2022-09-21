@@ -1,5 +1,5 @@
-# :clipboard: Multicultural Dashboard
-Built with [Streamlit](https://streamlit.io/), [Plotly](https://plotly.com/), [Python](https://www.python.org/) and hosted using an [Amazon EC2 instance](http://52.52.210.84:8501/).
+# :clipboard: [Multicultural Dashboard](http://52.52.210.84:8501/)
+Built with [Streamlit](https://streamlit.io/), [Plotly](https://plotly.com/), [Python](https://www.python.org/) and hosted using an [Amazon EC2 instance](https://aws.amazon.com/?nc2=h_lg).
 
 # Key Takeaways from US Population trends between 2010-2020
 - Overall population grew by 6.5% in the decade
