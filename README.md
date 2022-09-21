@@ -1,5 +1,5 @@
 # :clipboard: [Multicultural Dashboard](http://52.52.210.84:8501/)
-Built with [Streamlit](https://streamlit.io/), [Plotly](https://plotly.com/), [Python](https://www.python.org/) and hosted using an [Amazon EC2 instance](https://aws.amazon.com/?nc2=h_lg).
+Built with [Streamlit](https://streamlit.io/), [Plotly](https://plotly.com/), [Python](https://www.python.org/) and hosted using an [Amazon EC2 instance](https://aws.amazon.com/?nc2=h_lg). Data Source: [US Census Datasets](https://www.census.gov/data.html).
 
 # US Population Key Takeaways (2010-2020)
 - Overall population grew by 6.5% in the decade
@@ -13,7 +13,6 @@ Built with [Streamlit](https://streamlit.io/), [Plotly](https://plotly.com/), [P
 - Breakdown by Census Regions
 - Trends by State
 - Changes by Age Group
-- Data Source: [US Census Datasets](https://www.census.gov/data.html).
 
 ### Get in touch
 - anupmm at g:envelope:
