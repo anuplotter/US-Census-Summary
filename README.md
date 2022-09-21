@@ -6,7 +6,7 @@ Built with [Streamlit](https://streamlit.io/), [Plotly](https://plotly.com/), [P
 - Southern and Western regions grew by 9%+, almost 3x the growth rate for the rest of the country.
 - North Carolina, Washington and Florida clocked 15%+ growth rates.
 - Makeup of younger age groups is significantly different from the older population.
-- Multiculturalism is on the rise :rocket:!
+- Multiculturalism is on the rise :rocket:
 
 ### Dashboard Content
 - Total Population
