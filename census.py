@@ -22,14 +22,14 @@ st.set_page_config(
 time.sleep(1)
 
 #HIDING STREAMLIT ELEMENTS
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+# hide_st_style = """
+#             <style>
+#             #MainMenu {visibility: hidden;}
+#             footer {visibility: hidden;}
+#             header {visibility: hidden;}
+#             </style>
+#             """
+# st.markdown(hide_st_style, unsafe_allow_html=True)
 
 
 # Formatting link: https://d3-wiki.readthedocs.io/zh_CN/master/Formatting/
