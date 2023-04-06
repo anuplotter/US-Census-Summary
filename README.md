@@ -1,4 +1,4 @@
-# :clipboard: [Multicultural Dashboard](http://52.52.210.84:8501/)
+# :clipboard: [Multicultural Dashboard](https://anuplotter-us-census-summary-census-aijqtk.streamlit.app)
 Built with [Streamlit](https://streamlit.io/), [Plotly](https://plotly.com/), [Python](https://www.python.org/) and hosted using an [Amazon EC2 instance](https://aws.amazon.com/?nc2=h_lg). Data Source: [US Census](https://www.census.gov/data.html).
 
 # US Population Key Takeaways (2010-2020)
